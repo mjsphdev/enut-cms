@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\UserRequest;
-use App\User;
+use App\Http\Requests\SurveyRequest;
+use App\Survey;
+use LogActivity;
+use Auth;
 
-class UserController extends Controller
+class SurveyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $surveys = Survey::all();
         $tb_id = 1;
-        return view('pages.user.list', compact('users', 'tb_id'));
+
+        return view('pages.survey.list', compact('surveys', 'tb_id'));
     }
 
     /**
@@ -27,7 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('pages.user.create');
+        return view('pages.survey.create');
     }
 
     /**
@@ -36,16 +39,16 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(SurveyRequest $request)
     {
-        User::create([
-            'name' => $request['name'],
-            'username' => $request['username'],
-            'email' => $request['email'],
-            'password' => 'admin'
+        Survey::create([
+            'year' => $request->year,
+            'survey_type' => $request->survey_type
         ]);
 
-        return redirect()->route('users.index')->with('status', 'Created Successfully');
+        LogActivity::addToLog(Auth::user()->name.' added survey type.');
+
+        return redirect()->route('surveys.index')->with('status', 'Created Successfully');
     }
 
     /**
@@ -67,9 +70,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $survey = Survey::find($id);
 
-        return view('pages.user.update', compact('user'));
+        return view('pages.survey.update', compact('survey'));
     }
 
     /**
@@ -79,16 +82,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(SurveyRequest $request, $id)
     {
+        $survey = Survey::find($id);
+        $survey->year = $request->year;
+        $survey->survey_type = $request->survey_type;
+        $survey->save(); 
 
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->save();
+        LogActivity::addToLog(Auth::user()->name.' updated survey type.');
 
-        return redirect()->route('users.index')->with('status', 'Updated Successfully');
+        return redirect()->route('surveys.index')->with('status', 'Updated Successfully');
     }
 
     /**
@@ -99,9 +102,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        $survey = Survey::find($id);
+        $survey->delete();
 
-        return redirect()->route('users.index')->with('status', 'Deleted Successfully');
+        LogActivity::addToLog(Auth::user()->name.' deleted survey type.');
+
+        return redirect()->route('surveys.index')->with('status', 'Deleted Successfully');
     }
 }

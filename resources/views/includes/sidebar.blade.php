@@ -20,50 +20,17 @@
                                 aria-expanded="false"><i data-feather="monitor" class="feather-icon"></i><span
                                     class="hide-menu">Announcement</span></a></li>
 
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                        <li class="sidebar-item {{ (Route::is('surveys.index')) || (Route::is('surveys.create')) ? 'selected' : '' }}"> <a href="{{ route('surveys.index') }}" class="sidebar-link {{ (Route::is('surveys.index')) || (Route::is('surveys.create')) ? 'selected' : '' }}"
                                 aria-expanded="false"><i data-feather="book" class="feather-icon"></i><span
-                                    class="hide-menu">Survey Type </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
-                                            class="hide-menu"> List
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="form-input-grid.html" class="sidebar-link"><span
-                                            class="hide-menu"> Create
-                                        </span></a>
-                                </li>
-                            </ul>
-                        </li>
+                                    class="hide-menu">Survey</span></a></li>
 
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                           <li class="sidebar-item {{ (Route::is('file-uploads.index')) || (Route::is('file-uploads.create')) ? 'selected' : '' }}"> <a href="{{ route('file-uploads.index') }}" class="sidebar-link {{ (Route::is('file-uploads.index')) || (Route::is('file-uploads.create')) ? 'selected' : '' }}"
                                 aria-expanded="false"><i data-feather="folder" class="feather-icon"></i><span
-                                    class="hide-menu">File Upload</span></a>
-                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
-                                            class="hide-menu"> List
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="form-input-grid.html" class="sidebar-link"><span
-                                            class="hide-menu"> Create
-                                        </span></a>
-                                </li>
-                            </ul>
-                        </li>
+                                    class="hide-menu">File</span></a></li>
 
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                        <li class="sidebar-item {{ (Route::is('puf-items.index')) || (Route::is('puf-items.create')) ? 'selected' : '' }}"> <a href="{{ route('puf-items.index') }}" class="sidebar-link {{ (Route::is('puf-items.index')) || (Route::is('puf-items.create')) ? 'selected' : '' }}"
                                 aria-expanded="false"><i data-feather="folder-plus" class="feather-icon"></i><span
-                                    class="hide-menu">Public Use File </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
-                                            class="hide-menu"> List
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="form-input-grid.html" class="sidebar-link"><span
-                                            class="hide-menu"> Create
-                                        </span></a>
-                                </li>
-                            </ul>
-                        </li>
+                                    class="hide-menu">PUF</span></a></li>
 
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span

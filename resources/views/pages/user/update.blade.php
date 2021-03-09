@@ -1,11 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-@if(session('status'))
-    <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" id="success-alert" role="alert">
-        <strong>Success - </strong> {{ session('status') }}
-    </div>
-@endif
 <div class="row">
                     <div class="col-12">
                         <div class="card">

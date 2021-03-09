@@ -21,4 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController');
 Route::resource('announcements', 'AnnouncementController');
+Route::resource('surveys', 'SurveyController');
+Route::resource('file-uploads', 'FileController');
+Route::resource('puf-items', 'PufItemController');
+Route::post('puf-items/year-survey', 'PufItemController@survey');
+Route::post('puf-items/{id}/year-survey', 'PufItemController@survey');
 

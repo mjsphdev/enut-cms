@@ -1,15 +1,15 @@
 @extends('layouts.main')
 
 @section('content')
-
 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Create Announcement</h4>
+                                <h4 class="card-title">Update User</h4>
                                 <hr/>
-                                <form action="{{ route('announcements.store') }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ route('announcements.update', $announcement->id) }}" method="post" enctype="multipart/form-data">
                                     {{ csrf_field() }}
+                                    {{ method_field('PATCH') }}
                                     <div class="form-body">
                                         <div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
                                             <div class="row">
@@ -18,7 +18,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <input type="text" class="form-control" name="title"
-                                                                value="{{ old('title') }}" placeholder="Title">
+                                                                value="{{ $announcement->title }}" placeholder="Title">
                                                               @if ($errors->has('title'))
                                                                  <span class="help-block">
                                                                     <strong class="text-danger">{{ $errors->first('title') }}</strong>
@@ -36,7 +36,7 @@
                                                 <div class="col-lg-10">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <input id="post_validity" name="post_validity" class="form-control" style="cursor: pointer;">
+                                                            <input id="post_validity" name="post_validity" class="form-control"  value="{{ $announcement->post_validity }}" style="cursor: pointer;">
                                                               @if ($errors->has('post_validity'))
                                                                  <span class="help-block">
                                                                     <strong class="text-danger">{{ $errors->first('post_validity') }}</strong>
@@ -57,7 +57,7 @@
                                                             <textarea class="form-control" name="content" id="editor"
                                                                 value="{{ old('content') }}" placeholder="Content">
                                                             </textarea>
-                                                            <input type="hidden" value="{{ old('content') }}" id="announcementContent">
+                                                            <input type="hidden" value="{{ $announcement->content }}" id="announcementContent">
                                                               @if ($errors->has('content'))
                                                                  <span class="help-block">
                                                                     <strong class="text-danger">{{ $errors->first('content') }}</strong>
@@ -82,6 +82,12 @@
                                                 <button type="button" class="tower-file-clear tower-file-button">
                                                     Clear
                                                 </button>
+                                            </div>
+                                            
+                                            <hr/>
+                                            <div style="padding:5px;">
+                                                <h3>Uploaded Image</h3>
+                                                <img alt="Select an Image" style="max-height:50vh; max-width:100%;" src="{{ asset('files/announcement/'.$announcement->image) }}"/>
                                             </div>
 
                                             <div class="collapse" id="demo-code-6">

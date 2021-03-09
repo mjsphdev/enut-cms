@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AnnouncementRequest;
+use App\Announcement;
+use LogActivity;
+use Auth;
 
 class AnnouncementController extends Controller
 {
@@ -13,7 +17,10 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        return view('pages.announcement.list');
+        $announcements = Announcement::all();
+        $tb_id = 1;
+
+        return view('pages.announcement.list', compact('announcements', 'tb_id'))->with(['title' => 'Announcements']);
     }
 
     /**
@@ -32,9 +39,23 @@ class AnnouncementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AnnouncementRequest $request)
     {
-        //
+        $filename = $request->image->getClientOriginalName();
+        $filepath = $request->image->move(public_path('files/announcement/'), $filename);
+
+        Announcement::create([
+            'title' => $request->title,
+            'post_validity' => $request->post_validity,
+            'content' => $request->content,
+            'image' => $filename,
+            'image_path' => $filepath,
+            'author' => Auth::user()->name
+        ]);
+
+        LogActivity::addToLog(Auth::user()->name.' added announcement.');
+
+        return redirect()->route('announcements.index')->with('status', 'Created Successfully');
     }
 
     /**
@@ -56,7 +77,9 @@ class AnnouncementController extends Controller
      */
     public function edit($id)
     {
-        //
+        $announcement = Announcement::find($id);
+
+        return view('pages.announcement.update', compact('announcement'));
     }
 
     /**
@@ -66,9 +89,29 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AnnouncementRequest $request, $id)
     {
-        //
+        $announcement = Announcement::find($id);
+
+        $announcement->title = $request->title;
+        $announcement->post_validity = $request->post_validity;
+        $announcement->content = $request->content;
+
+        if($request->image){
+            $filename = $request->image->getClientOriginalName();
+            $filepath = $request->image->move(public_path('files/announcement/'), $filename);
+            
+            @unlink(public_path('files/announcement/'.$announcement->image));
+
+            $announcement->image = $filename;
+            $announcement->image_path = $filepath;
+        }
+
+        $announcement->save();
+
+        LogActivity::addToLog(Auth::user()->name.' updated announcement.');
+
+        return redirect()->route('announcements.index')->with('status', 'Updated Successfully!');
     }
 
     /**
@@ -79,6 +122,17 @@ class AnnouncementController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $announcement = Announcement::find($id);
+        $image_path = public_path('files/announcement/').$announcement->image;
+
+        if(file_exists($image_path)){
+            @unlink($image_path);
+        }
+
+        $announcement->delete();
+
+        LogActivity::addToLog(Auth::user()->name.' deleted announcement.');
+
+        return redirect()->route('announcements.index')->with('status', 'Deleted Successfully!');
     }
 }
