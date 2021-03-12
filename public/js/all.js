@@ -54,7 +54,35 @@ ClassicEditor
         console.error( error );
 } );
 //PUF Description
-$('textarea#description').val(document.getElementById('item_description').value);
+try {
+    $('textarea#description').val(document.getElementById('item_description').value);
+} catch (error) {
+    
+}
+try {
+    $('textarea#question').val(document.getElementById('questionContent').value);
+} catch (error) {
+    
+}
+try {
+    $('textarea#answer').val(document.getElementById('answerContent').value);
+} catch (error) {
+    
+}
+
+
+//Page Content
+ClassicEditor
+.create( document.querySelector( '#pageeditor' ) )
+.then( editor => {
+    editor.ui.view.editable.element.style.height = '300px';
+        console.log( editor );
+    newData = document.getElementById('pageContent').value;
+    editor.setData(newData);    
+} )
+.catch( error => {
+        console.error( error );
+} );
 
 //Daterange Picker
 $(function() {
@@ -165,6 +193,34 @@ $(function (){
         }
 
     });
-    alert(survey)
 });
+
+// Update Image Status
+$(document).on('change', 'input[type=radio][name^=status]', function (){
+    var status_val = this.value;
+    var image_id = status_val.split('-')[1];
+    var status = status_val.split('-')[0];
+    $.ajax({
+        url:"image-uploads/status",
+        method: "post",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:{image_id:image_id, status:status},
+        success:function(data)
+        {
+            tata.success('Success', 'Status Changed')
+
+        }
+      })
+  });
+
+//Light Box
+lightbox.option({
+	'albumLabel':	"picture %1 of %2",
+	'fadeDuration': 300,
+	'resizeDuration': 150,
+	'wrapAround': true
+})
+
 

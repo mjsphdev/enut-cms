@@ -27,7 +27,7 @@ class PufItemRequest extends FormRequest
             'title' => 'required',
             'description' => 'required', 
             'overview' => 'required',
-            'puf_file' => 'required|mimes:pdf',
+            'puf_file' => 'required|sometimes|mimes:pdf',
             'year' => 'required',
             'survey' => 'required'
         ];

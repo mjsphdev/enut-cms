@@ -35,7 +35,7 @@
                                                     <a class="btn btn-sm btn-info" href="{{ route('puf-items.edit', $puf_item->id.'-'.$puf_item->item_year) }}"><i class="icon-pencil"></i></a>
                                                    </div>
                                                    <div class="col-sm-2">
-                                                    <form action="{{ route('puf-items.destroy', $puf_item->id) }}" method="post">
+                                                    <form action="{{ route('puf-items.destroy', $puf_item->id.'-'.$puf_item->item_year) }}" method="post">
                                                       {{ csrf_field() }}
                                                       {{ method_field('DELETE') }}
                                                       <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"><i class="icon-trash"></i></button>

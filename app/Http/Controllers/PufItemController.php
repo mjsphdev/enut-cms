@@ -106,9 +106,35 @@ class PufItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PufItemRequest $request, $id)
     {
-        //
+        $year = $request->year;
+        $puf = DB::table('nns_'.$year.'.puf_items')->where('id', $id)->first();
+        
+        $puf_item = [
+            'item_title' => $request->title,
+            'item_description' => $request->description,
+            'item_overview' => $request->overview,
+            'item_survey' => $request->survey,
+            'item_year' => $request->year,
+        ];
+       
+
+        if($request->puf_file)
+        {
+            $filename = $request->puf_file->getClientOriginalName();
+            $filepath = $request->puf_file->move(public_path('files/puf/'.$request->year.'/'), $filename);
+
+            @unlink(public_path('files/puf/'.$puf->item_year.'/'.$puf->file_name));
+
+            $puf_item['file_name'] = $filename;
+            $puf_item['file_path'] = $filepath;
+        }
+
+        DB::table('nns_'.$year.'.puf_items')->where('id', $id)->update($puf_item);
+
+        return redirect()->route('puf-items.index')->with('status', 'Updated Successfully');
+        
     }
 
     /**
@@ -119,7 +145,21 @@ class PufItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $param = explode('-', $id);
+        $id = $param[0];
+        $year = $param[1];
+
+        $puf = DB::table('nns_'.$year.'.puf_items')->where('id', $id)->first();
+
+        $filepath = public_path('files/puf/').$puf->item_year.'/'.$puf->file_name;
+        if(file_exists($filepath))
+        {
+            @unlink($filepath);
+        }
+       
+        DB::table('nns_'.$year.'.puf_items')->where('id', $id)->delete();
+
+        return redirect()->route('puf-items.index')->with('status', 'Deleted Successfully');
     }
 
     function survey(Request $request)

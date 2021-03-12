@@ -37,12 +37,13 @@
                                                 <div class="col-lg-10">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                              <select id="year" name="year" class="form-control">
+                                                              <select id="year" name="year" class="form-control" hidden>
                                                                    <option selected disabled>Choose Year</option>
                                                                    @foreach($years as $year)
                                                                     <option value="{{$year->year}}" {{ ($puf_item->item_year == $year->year) ? 'selected' : '' }}>{{ $year->year }} - {{ $year->survey_type }}</option>
                                                                    @endforeach
                                                               </select>
+                                                              <h3><span class="badge badge-primary">{{ $puf_item->item_year}}</span></h3>
                                                               @if ($errors->has('year'))
                                                                  <span class="help-block">
                                                                     <strong class="text-danger">{{ $errors->first('year') }}</strong>
