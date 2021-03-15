@@ -8,7 +8,11 @@
 /****************************************
  *       Basic Table                   *
  ****************************************/
-$('#zero_config').DataTable();
+$('#zero_config').DataTable({
+    columnDefs: [
+        { orderable: false, targets: 0 }
+      ]
+});
 
 /****************************************
  *       Default Order Table           *

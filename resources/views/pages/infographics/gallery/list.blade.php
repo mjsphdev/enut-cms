@@ -28,6 +28,7 @@
 					<a href="{{ asset('files/infographics').'/'.$image->brochure_year.'/'.$image->province.'/'.$image->brochure_filename }}" data-lightbox="gallery" data-title="{{ $image->brochure_group }}">
 						<img src="{{ asset('files/infographics').'/'.$image->brochure_year.'/'.$image->province.'/'.$image->brochure_filename }}" class="img-fluid img-thumbnail" alt="{{ $image->brochure_group }}">
 					</a>
+					<br>
 					<small>{{ $image->brochure_group }}</small>
 					<small>Page - {{ $image->page_no }}</small>
                     <br>

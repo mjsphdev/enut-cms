@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ImageRequest;
 use App\ImageContent;
 use DB;
+use LogActivity;
+use Auth;
 
 class ImageController extends Controller
 {
@@ -53,6 +55,8 @@ class ImageController extends Controller
             'image_slug' => $details->page_slug,
             'image_filename' => $filename
         ]);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">uploaded</span> image: '.'<small>'.$request->title.'</small>');
 
         return redirect()->route('image-uploads.index')->with('status', 'Uploaded Successfully');
     }
@@ -112,6 +116,8 @@ class ImageController extends Controller
 
         $image_content->save();
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> image: '.'<small>'.$request->title.'</small>');
+
         return redirect()->route('image-uploads.index')->with('status', 'Updated Successfully');
     }
 
@@ -132,6 +138,8 @@ class ImageController extends Controller
             @unlink($image_path);
         }
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> image: '.'<small>'.$image_content->image_title.'</small>');
+
         $image_content->delete();
 
         return redirect()->route('image-uploads.index')->with('status', 'Deleted Successfully');
@@ -140,6 +148,10 @@ class ImageController extends Controller
     function status(Request $request)
     {
         $image = ImageContent::find($request->get('image_id'));
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-warning">changed</span> image status: '.'<small>'.
+                    $image->image_title.' '.($image->status == 1 ? 'active' : 'inactive').' to '.($request->get('status') == 1 ? 'active' : 'inactive').'</small>');
+
         $image->status = $request->get('status');
 
         $image->save();

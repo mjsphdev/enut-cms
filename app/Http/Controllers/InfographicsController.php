@@ -9,6 +9,8 @@ use App\BrochureCategory;
 use App\UploadBrochure;
 use App\Survey;
 use DB;
+use Auth;
+use LogActivity;
 
 class InfographicsController extends Controller
 {
@@ -52,6 +54,8 @@ class InfographicsController extends Controller
             'brochure_year' => $request->year,
             'brochure_thumbnail' => $filename
         ]);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">uploaded</span> infographics thumbnail: '.'<small>Year :'.$request->year.'</small>');
 
         return redirect()->route('infographics.index')->with('status', 'Uploaded Successfully');
     }
@@ -105,6 +109,8 @@ class InfographicsController extends Controller
 
         $infographic->save();
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> infographics thumbnail: '.'<small>Year :'.$request->year.'</small>');
+
         return redirect()->route('infographics.index')->with('status', 'Updated Successfully');
     }
 
@@ -123,6 +129,8 @@ class InfographicsController extends Controller
         {
             @unlink($thumbnail_path);
         }
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">deleted</span> infographics thumbnail: '.'<small>Year :'.$infographic->brochure_year.'</small>');
 
         $infographic->delete();
 
@@ -213,8 +221,13 @@ class InfographicsController extends Controller
                 'brochure_filename' => $filename,
                 'province' => $request->province
             ]);
-            
+
+            LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">uploaded</span> infographics for '.$request->province.': '.
+                         '<small>Year: '.$brochure_category->brochure_year.', '.$brochure_group.' - Page'.$page_no.'</small>');
+    
         }
+
+        
 
         return redirect()->route('gallery.index', compact('id'))->with('status', 'Uploaded Successfully');
     }
@@ -230,6 +243,9 @@ class InfographicsController extends Controller
         if(file_exists($image_path)){
             @unlink($image_path);
         }
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> infographics from '.$image->province.': '.
+        '<small>Year: '.$year->brochure_year.', '.$image->brochure_group.' - Page'.$image->page_no.'</small>');
 
         $image->delete();
 

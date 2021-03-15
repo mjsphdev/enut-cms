@@ -53,7 +53,7 @@ class AnnouncementController extends Controller
             'author' => Auth::user()->name
         ]);
 
-        LogActivity::addToLog(Auth::user()->name.' added announcement.');
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">added</span> announcement: '.'<small>'.$request->title.'</small>');
 
         return redirect()->route('announcements.index')->with('status', 'Created Successfully');
     }
@@ -109,7 +109,7 @@ class AnnouncementController extends Controller
 
         $announcement->save();
 
-        LogActivity::addToLog(Auth::user()->name.' updated announcement.');
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> announcement: '.'<small>'.$request->title.'</small>');
 
         return redirect()->route('announcements.index')->with('status', 'Updated Successfully!');
     }
@@ -129,9 +129,9 @@ class AnnouncementController extends Controller
             @unlink($image_path);
         }
 
-        $announcement->delete();
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> announcement: '.'<small>'.$announcement->title.'</small>');
 
-        LogActivity::addToLog(Auth::user()->name.' deleted announcement.');
+        $announcement->delete();
 
         return redirect()->route('announcements.index')->with('status', 'Deleted Successfully!');
     }

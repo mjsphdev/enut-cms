@@ -46,7 +46,7 @@ class SurveyController extends Controller
             'survey_type' => $request->survey_type
         ]);
 
-        LogActivity::addToLog(Auth::user()->name.' added survey type.');
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">added</span> survey type: '.'<small>'.$request->year.' - '.$request->survey_type.'</small>');
 
         return redirect()->route('surveys.index')->with('status', 'Created Successfully');
     }
@@ -89,7 +89,7 @@ class SurveyController extends Controller
         $survey->survey_type = $request->survey_type;
         $survey->save(); 
 
-        LogActivity::addToLog(Auth::user()->name.' updated survey type.');
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> survey type: '.'<small>'.$request->year.' - '.$request->survey_type.'</small>');
 
         return redirect()->route('surveys.index')->with('status', 'Updated Successfully');
     }
@@ -103,9 +103,11 @@ class SurveyController extends Controller
     public function destroy($id)
     {
         $survey = Survey::find($id);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> survey type: '.'<small>'.$survey->year.' - '.$survey->survey_type.'</small>');
+
         $survey->delete();
 
-        LogActivity::addToLog(Auth::user()->name.' deleted survey type.');
 
         return redirect()->route('surveys.index')->with('status', 'Deleted Successfully');
     }

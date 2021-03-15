@@ -9,6 +9,7 @@
                                 <hr/>
                                 <form action="{{ route('surveys.store') }}" method="post">
                                     {{ csrf_field() }}
+                                    
                                     <div class="form-body">
                                         <div class="form-group {{ $errors->has('year') ? ' has-error' : '' }}">
                                             <div class="row">

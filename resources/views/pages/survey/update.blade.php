@@ -5,7 +5,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Update User</h4>
+                                <h4 class="card-title">Update Survey</h4>
                                 <hr/>
                                 <form action="{{ route('surveys.update', $survey->id) }}" method="post">
                                     {{ csrf_field() }}

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\FaqRequest;
 use App\Faq;
 use DB;
+use LogActivity;
+use Auth;
 
 class FaqController extends Controller
 {
@@ -47,6 +49,8 @@ class FaqController extends Controller
             'question' => $request->question,
             'answer' => $request->answer
         ]);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">added</span> FAQ: '.'<small>'.$request->question.'</small>');
 
         return redirect()->route('faqs.index')->with('status', 'Added Successfully');
     }
@@ -91,6 +95,8 @@ class FaqController extends Controller
         $faq->answer = $request->answer;
         $faq->save();
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> FAQ: '.'<small>'.$request->question.'</small>');
+
         return redirect()->route('faqs.index')->with('status', 'Updated Successfully');
     }
 
@@ -103,6 +109,9 @@ class FaqController extends Controller
     public function destroy($id)
     {
         $faq = Faq::find($id);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> FAQ: '.'<small>'.$faq->question.'</small>');
+
         $faq->delete();
 
         return redirect()->route('faqs.index')->with('status', 'Deleted Successfully');

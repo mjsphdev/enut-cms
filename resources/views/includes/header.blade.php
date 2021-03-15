@@ -12,9 +12,9 @@
                         <a href="index.html">
                             <b class="logo-icon">
                                 <!-- Dark Logo icon -->
-                                <img src="{{ asset('assets/images/logo-icon.png') }}" alt="homepage" class="dark-logo" />
+                                <img src="{{ asset('assets/images/logos/e-icon.png') }}" height="60px" alt="homepage" class="dark-logo" />
                                 <!-- Light Logo icon -->
-                                <img src="{{ asset('assets/images/logo-icon.png') }}" alt="homepage" class="light-logo" />
+                                <img src="{{ asset('assets/images/logos/e-icon.png') }}" height="60px" alt="homepage" class="light-logo" />
                             </b>
                             <!--End Logo icon -->
                             <!-- Logo text -->
@@ -132,14 +132,20 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('assets/images/users/profile-pic.jpg') }}" alt="user" class="rounded-circle"
+                                @if(Auth::user()->profile)
+                                  <img src="{{ asset('files/profile/') }}/{{Auth::user()->profile}}" alt="user" class="rounded-circle"
                                     width="40">
+                                @else
+                                  <img src="{{ asset('assets/images/profile/default.png') }}" alt="user" class="rounded-circle"
+                                    width="40">                               
+                                @endif     
+                                
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark">{{ Auth::user()->name }}</span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
+                                <a class="dropdown-item" href="{{ route('profile.index') }}"><i data-feather="user"
                                         class="svg-icon mr-2 ml-1"></i>
                                     My Profile</a>
                                 <div class="dropdown-divider"></div>

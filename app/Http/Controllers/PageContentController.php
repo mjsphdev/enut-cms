@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PageContentRequest;
 use App\PageContent;
 use DB;
+use LogActivity;
+use Auth;
 
 class PageContentController extends Controller
 {
@@ -49,6 +51,8 @@ class PageContentController extends Controller
             'page_content' => $request->content,
             'slug' => $details->page_slug
         ]);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">added</span> content for: '.'<small>'.$details->page_title.'</small>');
 
         return redirect()->route('page-contents.index')->with('status', 'Added Successfully');
     }
@@ -95,6 +99,8 @@ class PageContentController extends Controller
         $page_content->slug = $details->page_slug;
         $page_content->save();
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> content for: '.'<small>'.$details->page_title.'</small>');
+
         return redirect()->route('page-contents.index')->with('status', 'Updated Successfully');
     }
 
@@ -107,6 +113,9 @@ class PageContentController extends Controller
     public function destroy($id)
     {
         $page_content = PageContent::find($id);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> content for: '.'<small>'.$page_content->page_title.'</small>');
+
         $page_content->delete();
 
         return redirect()->route('page-contents.index')->with('status', 'Deleted Successfully');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\User;
+use LogActivity;
+use Auth;
 
 class UserController extends Controller
 {
@@ -17,6 +19,7 @@ class UserController extends Controller
     {
         $users = User::all();
         $tb_id = 1;
+
         return view('pages.user.list', compact('users', 'tb_id'));
     }
 
@@ -44,6 +47,8 @@ class UserController extends Controller
             'email' => $request['email'],
             'password' => 'admin'
         ]);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">added</span> user: '.'<small>'.$request->name.'</small>');
 
         return redirect()->route('users.index')->with('status', 'Created Successfully');
     }
@@ -88,6 +93,8 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->save();
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> user: '.'<small>'.$request->name.'</small>');
+
         return redirect()->route('users.index')->with('status', 'Updated Successfully');
     }
 
@@ -100,7 +107,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        $user->delete();
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> user: '.'<small>'.$user->name.'</small>');
+
+        $user->delete();   
 
         return redirect()->route('users.index')->with('status', 'Deleted Successfully');
     }

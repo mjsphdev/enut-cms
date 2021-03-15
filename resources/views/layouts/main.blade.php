@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/logos/e-icon.png') }}">
     <title>ENUT-CMS</title>
     <!-- Custom CSS -->
     <link href="{{ asset('assets/extra-libs/c3/c3.min.css') }}" rel="stylesheet">
@@ -204,10 +204,11 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/libs/popper.js/dist/umd/popper.min.js') }}"></script>
     <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
     <!-- apps -->
     <!-- apps -->
@@ -222,11 +223,11 @@
     <!--This page JavaScript -->
     <script src="{{ asset('assets/extra-libs/c3/d3.min.js') }}"></script>
     <script src="{{ asset('assets/extra-libs/c3/c3.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/chartist/dist/chartist.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/libs/chartist/dist/chartist.min.js') }}"></script>
     <script src="{{ asset('assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
     <script src="{{ asset('assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js') }}"></script>
     <script src="{{ asset('assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js') }}"></script>
-    <script src="{{ asset('dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
+    <script src="{{ asset('dist/js/pages/dashboards/dashboard1.min.js') }}"></script> -->
     <script src="{{ asset('assets/libs/image-input/tower-file-input.js') }}"></script>
 
     <!--This page plugins -->

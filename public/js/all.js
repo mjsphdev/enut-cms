@@ -3,6 +3,23 @@ $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
     $("#success-alert").slideUp(500);
 });
 
+//Survey Type Module
+
+$(function(){
+    let yearpicker;
+    try {
+        yearpicker = document.getElementById('yearpicker').value;
+    } catch (error) {
+        
+    }
+    
+    let fullYear = new Date();
+    $("#yearpicker").yearpicker({
+        year: yearpicker ? yearpicker : fullYear.getFullYear(),
+        startYear: 1995,
+        endYear: 2050,
+     });
+})
 // User Module
   
 //User Datatable
@@ -16,43 +33,51 @@ $(document).on('ready', function () {
 let newData; 
 
 //Announcement Editor
-ClassicEditor
-.create( document.querySelector( '#editor' ) )
-.then( editor => {
-    editor.ui.view.editable.element.style.height = '300px';
-        console.log( editor );
-    newData = document.getElementById('announcementContent').value;
-    editor.setData(newData);    
-} )
-.catch( error => {
-        console.error( error );
-} );
+if(document.querySelector( '#editor' )){
+    ClassicEditor
+    .create( document.querySelector( '#editor' ) )
+    .then( editor => {
+        editor.ui.view.editable.element.style.height = '300px';
+            console.log( editor );
+        newData = document.getElementById('announcementContent').value;
+        editor.setData(newData);    
+    } )
+    .catch( error => {
+            console.error( error );
+    } );
+}
+
 
 //File Editor
-ClassicEditor
-.create( document.querySelector( '#fileeditor' ) )
-.then( editor => {
-    editor.ui.view.editable.element.style.height = '300px';
-        console.log( editor );
-    newData = document.getElementById('fileContent').value;
-    editor.setData(newData);    
-} )
-.catch( error => {
-        console.error( error );
-} );
+if(document.querySelector('#fileeditor')){
+    ClassicEditor
+    .create( document.querySelector( '#fileeditor' ) )
+    .then( editor => {
+        editor.ui.view.editable.element.style.height = '300px';
+            console.log( editor );
+        newData = document.getElementById('fileContent').value;
+        editor.setData(newData);    
+    } )
+    .catch( error => {
+            console.error( error );
+    } );    
+}
 
 //PUF Editor
-ClassicEditor
-.create( document.querySelector( '#pufeditor' ) )
-.then( editor => {
-    editor.ui.view.editable.element.style.height = '300px';
-        console.log( editor );
-    newData = document.getElementById('pufContent').value;
-    editor.setData(newData);    
-} )
-.catch( error => {
-        console.error( error );
-} );
+if(document.querySelector('#pufeditor')){
+    ClassicEditor
+    .create( document.querySelector( '#pufeditor' ) )
+    .then( editor => {
+        editor.ui.view.editable.element.style.height = '300px';
+            console.log( editor );
+        newData = document.getElementById('pufContent').value;
+        editor.setData(newData);    
+    } )
+    .catch( error => {
+            console.error( error );
+    } );
+}
+
 //PUF Description
 try {
     $('textarea#description').val(document.getElementById('item_description').value);
@@ -72,17 +97,20 @@ try {
 
 
 //Page Content
-ClassicEditor
-.create( document.querySelector( '#pageeditor' ) )
-.then( editor => {
-    editor.ui.view.editable.element.style.height = '300px';
-        console.log( editor );
-    newData = document.getElementById('pageContent').value;
-    editor.setData(newData);    
-} )
-.catch( error => {
-        console.error( error );
-} );
+if(document.querySelector('#pageeditor')){
+    ClassicEditor
+    .create( document.querySelector( '#pageeditor' ) )
+    .then( editor => {
+        editor.ui.view.editable.element.style.height = '300px';
+            console.log( editor );
+        newData = document.getElementById('pageContent').value;
+        editor.setData(newData);    
+    } )
+    .catch( error => {
+            console.error( error );
+    } );
+}
+
 
 //Daterange Picker
 $(function() {
@@ -127,14 +155,7 @@ $('#pufFile').fileInput({
 
 
 
-//Survey Type Module
-$(document).on('ready', function() {
-    $("#yearpicker").yearpicker({
-       year: 2020,
-       startYear: 1995,
-       endYear: 2050,
-    });
- });
+
 
 //Show/Hide base on category
 $('#category').on('change', function(){
@@ -167,32 +188,41 @@ $('#year').on('change', function(){
     });
 });
 
+let editPuf;
+try{
+    editPuf = document.getElementById('address').value
+}catch(error){
+    editPuf = ''
+}
 $(function (){
       let year = $('select#year').val();
       let survey = $('input#item_survey').val();
-      $.ajax({
-        url: 'year-survey',
-        method: 'post',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {year:year},
-        success:function(result){
-
-            let len = result.length;
-            $("#survey").empty();
-            $("#survey").append('<option selected disabled value>Choose Survey</option>');
-            for( let i = 0; i<len; i++){
-                let id = result[i]['form_no'];
-                let name = result[i]['survey'];           
-                $("#survey").append("<option value='"+id+"' " + 
-                (id=== survey ? 'selected="selected"' : '') +
-                ">"+name+"</option>");
+      if(editPuf === 'edit'){
+        $.ajax({
+            url: 'year-survey',
+            method: 'post',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {year:year},
+            success:function(result){
+    
+                let len = result.length;
+                $("#survey").empty();
+                $("#survey").append('<option selected disabled value>Choose Survey</option>');
+                for( let i = 0; i<len; i++){
+                    let id = result[i]['form_no'];
+                    let name = result[i]['survey'];           
+                    $("#survey").append("<option value='"+id+"' " + 
+                    (id=== survey ? 'selected="selected"' : '') +
+                    ">"+name+"</option>");
+                }
+    
             }
+    
+        });
+      }
 
-        }
-
-    });
 });
 
 // Update Image Status
@@ -223,4 +253,45 @@ lightbox.option({
 	'wrapAround': true
 })
 
+
+$(document).ready(function () {
+    $imgSrc = $('#imgProfile').attr('src');
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgProfile').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $('#btnChangePicture').on('click', function () {
+        // document.getElementById('profilePicture').click();
+        if (!$('#btnChangePicture').hasClass('changing')) {
+            $('#profilePicture').click();
+        }
+        else {
+            // change
+        }
+    });
+    $('#profilePicture').on('change', function () {
+        readURL(this);
+        $('#btnChangePicture').addClass('changing');
+        $('#btnChangePicture').attr('value', 'Confirm');
+        $('#btnDiscard').removeClass('d-none');
+        // $('#imgProfile').attr('src', '');
+    });
+    $('#btnDiscard').on('click', function () {
+        // if ($('#btnDiscard').hasClass('d-none')) {
+        $('#btnChangePicture').removeClass('changing');
+        $('#btnChangePicture').attr('value', 'Change');
+        $('#btnDiscard').addClass('d-none');
+        $('#imgProfile').attr('src', $imgSrc);
+        $('#profilePicture').val('');
+        // }
+    });
+});
 

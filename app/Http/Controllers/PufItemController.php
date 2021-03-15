@@ -67,6 +67,8 @@ class PufItemController extends Controller
             'file_path' => $filepath,
         ]);
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-success">uploaded</span> puf item: '.'<small>'.$request->title.'</small>');
+
         return redirect()->route('puf-items.index')->with('status', 'Uploaded Successfully');
     }
 
@@ -133,6 +135,8 @@ class PufItemController extends Controller
 
         DB::table('nns_'.$year.'.puf_items')->where('id', $id)->update($puf_item);
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> puf item: '.'<small>'.$request->title.'</small>');
+
         return redirect()->route('puf-items.index')->with('status', 'Updated Successfully');
         
     }
@@ -157,6 +161,8 @@ class PufItemController extends Controller
             @unlink($filepath);
         }
        
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span> puf item: '.'<small>'.$puf->item_title.'</small>');
+
         DB::table('nns_'.$year.'.puf_items')->where('id', $id)->delete();
 
         return redirect()->route('puf-items.index')->with('status', 'Deleted Successfully');

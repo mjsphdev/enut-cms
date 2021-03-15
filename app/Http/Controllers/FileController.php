@@ -65,7 +65,8 @@ class FileController extends Controller
         }
 
         File::create($files);
-        LogActivity::addToLog(Auth::user()->name.' uploaded'.$request->category);
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-dark">uploaded</span> '.$request->category.': <small>'.$request->title.'</small>');
 
         return redirect()->route('file-uploads.index')->with('status', 'Uploaded Successfully');
     }
@@ -137,6 +138,8 @@ class FileController extends Controller
 
         $file->save();
 
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-secondary">updated</span> '.$request->category.': <small>'.$request->title.'</small>');
+
         return redirect()->route('file-uploads.index')->with('status', 'Updated Successfully');
         
     }
@@ -163,6 +166,8 @@ class FileController extends Controller
         {
             @unlink($file_path);
         }
+
+        LogActivity::addToLog(Auth::user()->name.' <span class="badge badge-danger">deleted</span>'.$file->file_category.': <small>'.$file->file_title.'</small>');
 
         $file->delete();
 

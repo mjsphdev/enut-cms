@@ -65,6 +65,7 @@
                                                                    
                                                               </select>
                                                               <input type="hidden" id="item_survey" value="{{ $puf_item->item_survey }}">
+                                                              <input type="hidden" id="address" value="edit">
                                                               @if ($errors->has('survey'))
                                                                  <span class="help-block">
                                                                     <strong class="text-danger">{{ $errors->first('survey') }}</strong>

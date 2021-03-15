@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Auth::routes();
@@ -53,3 +53,7 @@ Route::get('infographics/gallery/{id}/upload', 'InfographicsController@gallery_c
 Route::post('infographics/gallery/{id}/upload', 'InfographicsController@gallery_store')->name('gallery.store');
 Route::delete('infographics/gallery/{id}', 'InfographicsController@gallery_destroy')->name('gallery.destroy');
 // Route::resource('gallery', 'GalleryController');
+
+// Profile Controller
+Route::get('profile', 'ProfileController@index')->name('profile.index');
+Route::patch('profile/update/{id}', 'ProfileController@update')->name('profile.update');
