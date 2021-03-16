@@ -176,4 +176,70 @@ class PufItemController extends Controller
 
         return response()->json($data);
     }
+
+    public function upload_dataset()
+    {
+        $years = DB::table('surveys')->get(['year', 'survey_type']);
+
+        return view('pages.puf.dataset.upload', compact('years'));
+    }
+    
+    function csvToArray($filename = '', $delimiter = ',')
+    {
+        if (!file_exists($filename) || !is_readable($filename))
+            return false;
+
+        $header = null;
+        $data = array();
+          if (($handle = fopen($filename, 'r')) !== false)
+          {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== false)
+            {
+                if (!$header)
+                    $header = $row;
+                else
+                    $data[] = array_combine($header, $row);
+            }
+            fclose($handle);
+          }
+
+         return $data;
+    }
+
+    function check_db_year($year)
+    {
+         $db = 'nns_'.$year;
+
+         return $db;
+    }
+
+    function check_survey($survey)
+    {
+         $puf = $survey.'_puf';
+
+         return $puf;
+    }
+
+    public function dataset_store(Request $request)
+    {
+
+          $db_year = $this->check_db_year($request->year);
+          $survey = $this->check_survey($request->survey);
+          $dbtable = $db_year.'.'.$survey;
+
+              try {
+              $path = $request->file('file')->getRealPath();
+              $uploadArr = $this->csvToArray($path);
+    
+              $chunks = array_chunk($uploadArr, 500);
+    
+              foreach ($chunks as $chunk) {
+                  DB::table($dbtable)->insert($chunk);
+              }
+              } catch (\Exception $e) {
+                return redirect()->route('dataset.index')->with('error', 'Something went wrong! Please make sure that your file is matched to the year/survey you\'ve chosen.');
+              }       
+              
+        return redirect()->route('dataset.index')->with('status', 'Uploaded Successfully');
+    }
 }

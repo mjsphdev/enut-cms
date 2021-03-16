@@ -32,20 +32,9 @@
                                 aria-expanded="false"><i data-feather="folder-plus" class="feather-icon"></i><span
                                     class="hide-menu">PUF</span></a></li>
 
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                        <li class="sidebar-item {{ (Route::is('scanned-questionaires.index')) || (Route::is('scanned-questionaires.create')) ? 'selected' : '' }}"> <a href="{{ route('scanned-questionaires.index') }}" class="sidebar-link {{ (Route::is('scanned-questionaires.index')) || (Route::is('scanned-questionaires.create')) ? 'selected' : '' }}"
                                 aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
-                                    class="hide-menu">Questionaire </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
-                                            class="hide-menu"> List
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="form-input-grid.html" class="sidebar-link"><span
-                                            class="hide-menu"> Create
-                                        </span></a>
-                                </li>
-                            </ul>
-                        </li>
+                                    class="hide-menu">Questionaires</span></a></li>
 
                         <li class="list-divider"></li>
                         <li class="nav-small-cap"><span class="hide-menu">Page Management</span></li>

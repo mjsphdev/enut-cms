@@ -188,6 +188,30 @@ $('#year').on('change', function(){
     });
 });
 
+$('#dataset_year').on('change', function(){
+    $.ajax({
+        url: 'puf-datasets/year-survey',
+        method: 'post',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {year:this.value},
+        success:function(result){
+
+            let len = result.length;
+            $("#survey").empty();
+            $("#survey").append('<option selected disabled value>Choose Survey</option>');
+            for( let i = 0; i<len; i++){
+                let id = result[i]['form_no'];
+                let name = result[i]['survey'];           
+                $("#survey").append("<option value='"+id+"'>"+name+"</option>");
+            }
+
+        }
+
+    });
+});
+
 let editPuf;
 try{
     editPuf = document.getElementById('address').value
@@ -294,4 +318,8 @@ $(document).ready(function () {
         // }
     });
 });
+
+$('.btn-svg').on('click', function(){
+    document.getElementById('overlay').style.visibility = "visible"
+})
 

@@ -177,6 +177,12 @@
                     </div>
                 @endif
 
+                @if(session('error'))
+                    <div class="alert alert-danger bg-danger text-white border-0 fade show" id="danger-alert" role="alert">
+                        <strong>Error - </strong> {{ session('error') }}
+                    </div>
+                @endif
+
                 @yield('content')
             </div>
  

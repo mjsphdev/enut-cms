@@ -2,8 +2,9 @@
 
 @section('content')
 <div class="row">
-    <div class="col-6 float-right">
+    <div class="col float-right">
         <a class="btn btn-success" href="{{ route('puf-items.create') }}">Upload PUF Item <i class="icon-folder-alt"></i></a>
+        <a class="btn btn-dark" href="{{ route('dataset.index') }}">Upload PUF Dataset <i class="icon-layers"></i></a>
     </div>
 </div>
 <br/>

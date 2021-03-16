@@ -35,6 +35,9 @@ Route::resource('file-uploads', 'FileController');
 Route::resource('puf-items', 'PufItemController');
 Route::post('puf-items/year-survey', 'PufItemController@survey');
 Route::post('puf-items/{id}/year-survey', 'PufItemController@survey');
+Route::get('puf-datasets', 'PufItemController@upload_dataset')->name('dataset.index');
+Route::post('puf-datasets/store', 'PufItemController@dataset_store')->name('dataset.store');
+Route::post('puf-datasets/year-survey', 'PufItemController@survey');
 
 // Page Content Resources
 Route::resource('page-contents', 'PageContentController');
@@ -57,3 +60,6 @@ Route::delete('infographics/gallery/{id}', 'InfographicsController@gallery_destr
 // Profile Controller
 Route::get('profile', 'ProfileController@index')->name('profile.index');
 Route::patch('profile/update/{id}', 'ProfileController@update')->name('profile.update');
+
+// Questionaires Controller
+Route::resource('scanned-questionaires', 'QuestionairesController');
